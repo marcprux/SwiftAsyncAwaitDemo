@@ -48,7 +48,7 @@ public enum FetchError {
 }
 
 @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
-func downloadFlag(for language: String) async throws -> (info: NSDictionary, svg: XMLDocument) {
+func downloadFlag(for language: String) async throws -> (info: NSDictionary, image: Data) {
     let results = try await AsyncAwaitFetcher.json(url: "https://restcountries.eu/rest/v2/lang/" + language)
 
     guard let infoDict = results.first else {
@@ -60,13 +60,17 @@ func downloadFlag(for language: String) async throws -> (info: NSDictionary, svg
     }
 
     let flagResponse = try await AsyncAwaitFetcher.fetch(url: flagURL)
-    let flagXML = try XMLDocument(data: flagResponse.data, options: [.nodeLoadExternalEntitiesNever])
+    let flagData = flagResponse.data
+    // let flagXML = try XMLDocument(data: flagData, options: [.nodeLoadExternalEntitiesNever])
 
-    return (infoDict, flagXML)
-    enum WebServiceErrors : Error {
-        case noValidResponse
-        case noFlag
-    }
+    return (infoDict, flagData)
+
+}
+
+/// An error thrown from `downloadFlag`
+enum WebServiceErrors : Error {
+    case noValidResponse
+    case noFlag
 }
 
 
