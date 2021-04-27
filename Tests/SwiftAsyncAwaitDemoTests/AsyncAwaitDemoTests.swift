@@ -1,6 +1,22 @@
 import XCTest
 @testable import SwiftAsyncAwaitDemo
 
+
+
+
+
+func foo() async -> String {
+    return "FOO"
+}
+
+func bar() async throws -> String {
+    return "BAR"
+}
+
+
+
+
+
 @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
 final class AsyncAwaitDemoTests: XCTestCase {
 
@@ -38,55 +54,45 @@ final class AsyncAwaitDemoTests: XCTestCase {
             XCTAssertEqual("Māori", (mi.info["languages"] as? [NSDictionary])?.last?["name"] as? String)
         }
     }
-
-}
-
-func foo() async -> String {
-    return "FOO"
-}
-
-func bar() async throws -> String {
-    return "BAR"
 }
 
 
-
-@available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
  // “'runDetached(priority:operation:)' is only available in macOS 9999 or newer”
 public extension XCTestCase {
     /// Performs the given `async` closure and wait for completion using an `XCTestExpectation`, then returns the result or re-throws the error
+    @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
     @discardableResult func waitForAsyncThrowing<T>(expectationDescription: String? = nil, timeout: TimeInterval = 5.0, closure: @escaping () async throws -> T) throws -> T {
         let expectation = self.expectation(description: expectationDescription ?? "Async operation")
 
-        let result: Tricky<Result<T, Error>?> = .init(nil)
+        let result: ReferenceWrapper<Result<T, Error>?> = .init(nil)
         // var resultValue: Result<T, Error>?
 
-        Task.runDetached(priority: .default) {
-            do {
-                let value = try await closure()
+        // Task.runDetached raises: “'runDetached(priority:operation:)' is deprecated: `Task.runDetached` was replaced by `detach` and will be removed shortly.”
 
-                // no can do: “Mutation of captured var 'result' in concurrently-executing code”
-                //resultValue = .success(value)
-                result.value = .success(value)
+        let task = _Concurrency.detach {
+            do {
+                result.value = .success(try await closure())
             } catch {
-                //resultValue = .failure(error)
                 result.value = .failure(error)
             }
             expectation.fulfill()
         }
 
         self.wait(for: [expectation], timeout: timeout)
+        task.cancel() // in case we time out
+
         return try result.value!.get() // leave the gun, take the cannoli
     }
 
     /// Non-throwing variant of `waitForAsyncThrowing`
+    @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
     @discardableResult func waitForAsync<T>(expectationDescription: String? = nil, timeout: TimeInterval = 5.0, closure: @escaping () async -> T) -> T {
         return try! waitForAsyncThrowing(expectationDescription: expectationDescription, timeout: timeout, closure: closure)
     }
 }
 
 /// Reference box to bypass compiler check for mutating values in concurrently-executing code in `XCTestCase.waitForAsyncThrowing`
-private final class Tricky<T> {
+private final class ReferenceWrapper<T> {
     fileprivate var value: T
     fileprivate init(_ value: T) { self.value = value }
 }
