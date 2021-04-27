@@ -1,5 +1,4 @@
-name: MemoZ CI
-
+name: SwiftAsyncAwaitDemo CI
 
 on:
   workflow_dispatch:
