@@ -1,20 +1,92 @@
 import XCTest
-@testable import AsyncAwaitDemo
+@testable import SwiftAsyncAwaitDemo
 
+@available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
 final class AsyncAwaitDemoTests: XCTestCase {
-    @asyncHandler func testAsyncAwait() {
-        let f = await foo()
-        XCTAssertEqual("FOO", f)
 
-        let b = await bar()
-        XCTAssertEqual("BAR", b)
+    // @asyncHandler // “'@asyncHandler' has been removed from the language” (20-04-2021)
+    func testAsyncAwait() throws {
+        waitForAsync {
+            let x = await foo()
+            XCTAssertEqual("FOO", x)
+        }
+
+        try waitForAsyncThrowing {
+            let x = try await bar()
+            XCTAssertEqual("BAR", x)
+        }
     }
+
+    func testFetcher() throws {
+        XCTAssertEqual(200, try waitForAsyncThrowing {
+            try await AsyncAwaitFetcher.fetch(url: "http://www.example.org").response.statusCode
+        })
+
+        XCTAssertEqual(404, try waitForAsyncThrowing {
+            try await AsyncAwaitFetcher.fetch(url: "http://www.example.org/MISSING").response.statusCode
+        })
+
+        XCTAssertEqual(1256, try waitForAsyncThrowing {
+            try await AsyncAwaitFetcher.fetch(url: "http://www.example.org").data.count
+        })
+    }
+
+    func testWebService() throws {
+        try waitForAsyncThrowing {
+            let mi = try await downloadFlag(for: "mi")
+            XCTAssertEqual("New Zealand", mi.info["name"] as? String)
+            XCTAssertEqual("Māori", (mi.info["languages"] as? [NSDictionary])?.last?["name"] as? String)
+        }
+    }
+
 }
 
 func foo() async -> String {
     return "FOO"
 }
 
-func bar() async -> String {
+func bar() async throws -> String {
     return "BAR"
+}
+
+
+
+@available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
+ // “'runDetached(priority:operation:)' is only available in macOS 9999 or newer”
+public extension XCTestCase {
+    /// Performs the given `async` closure and wait for completion using an `XCTestExpectation`, then returns the result or re-throws the error
+    @discardableResult func waitForAsyncThrowing<T>(expectationDescription: String? = nil, timeout: TimeInterval = 5.0, closure: @escaping () async throws -> T) throws -> T {
+        let expectation = self.expectation(description: expectationDescription ?? "Async operation")
+
+        let result: Tricky<Result<T, Error>?> = .init(nil)
+        // var resultValue: Result<T, Error>?
+
+        Task.runDetached(priority: .default) {
+            do {
+                let value = try await closure()
+
+                // no can do: “Mutation of captured var 'result' in concurrently-executing code”
+                //resultValue = .success(value)
+                result.value = .success(value)
+            } catch {
+                //resultValue = .failure(error)
+                result.value = .failure(error)
+            }
+            expectation.fulfill()
+        }
+
+        self.wait(for: [expectation], timeout: timeout)
+        return try result.value!.get() // leave the gun, take the cannoli
+    }
+
+    /// Non-throwing variant of `waitForAsyncThrowing`
+    @discardableResult func waitForAsync<T>(expectationDescription: String? = nil, timeout: TimeInterval = 5.0, closure: @escaping () async -> T) -> T {
+        return try! waitForAsyncThrowing(expectationDescription: expectationDescription, timeout: timeout, closure: closure)
+    }
+}
+
+/// Reference box to bypass compiler check for mutating values in concurrently-executing code in `XCTestCase.waitForAsyncThrowing`
+private final class Tricky<T> {
+    fileprivate var value: T
+    fileprivate init(_ value: T) { self.value = value }
 }

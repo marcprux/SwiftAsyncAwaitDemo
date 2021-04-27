@@ -35,6 +35,6 @@ let package = Package(
         ),
     ],
     swiftLanguageVersions: [
-        .version("5.5")
+        .version("5.4") // Really 5.5, but Xcode 12.5 doesn't like it even with the 5.5 toolchain activated
     ]
 )
