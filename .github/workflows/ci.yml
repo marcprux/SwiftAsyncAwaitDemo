@@ -24,7 +24,6 @@ jobs:
       - run: curl https://swift.org/builds/swift-5.5-branch/ubuntu2004/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a-ubuntu20.04.tar.gz -s | tar -xz
       - run: mv swift-5.5-DEVELOPMENT-SNAPSHOT* swift-5.5-DEVELOPMENT-SNAPSHOT
       - run: |
-        export PATH="$(pwd)/swift-5.5-DEVELOPMENT-SNAPSHOT/usr/bin:$PATH"
         swift test --enable-test-discovery
 
   watchOS:
