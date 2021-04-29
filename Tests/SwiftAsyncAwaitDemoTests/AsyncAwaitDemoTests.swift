@@ -55,15 +55,15 @@ final class AsyncAwaitDemoTests: XCTestCase {
 
     func testFetcher() throws {
         XCTAssertEqual(200, try waitForAsyncThrowing {
-            try await URLSession.shared.fetch(url: "http://www.example.com").response.statusCode
+            try await URLSession.shared.fetch("http://www.example.com").response.statusCode
         })
 
         XCTAssertEqual(404, try waitForAsyncThrowing {
-            try await URLSession.shared.fetch(url: "http://www.example.net/MISSING").response.statusCode
+            try await URLSession.shared.fetch("http://www.example.net/MISSING").response.statusCode
         })
 
         XCTAssertEqual(1256, try waitForAsyncThrowing {
-            try await URLSession.shared.fetch(url: "http://www.example.org").data.count
+            try await URLSession.shared.fetch("http://www.example.org").data.count
         })
     }
 
@@ -75,24 +75,25 @@ final class AsyncAwaitDemoTests: XCTestCase {
         }
     }
 
-    func testConcurrency() throws {
+    func testStructuredConcurrency() throws {
         try waitForAsyncThrowing {
-            try await downloadTasks()
+            try await downloadTasksWithStructuredConcurrency()
         }
     }
 }
 
 
-func downloadTasks() async throws -> String {
+@available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
+func downloadTasksWithStructuredConcurrency() async throws -> String {
     print("\(#function) started")
 
     async let uuid1 = URLSession.shared.fetch("https://httpbin.org/uuid")
     async let uuid2 = URLSession.shared.fetch("https://httpbin.org/uuid")
 
-    return """
+    return try await """
     ids fetched concurrently:
-    uuid1: \(String(data: uuid1, encoding: .utf8)!)
-    uuid2: \(String(data: uuid2, encoding: .utf8)!)
+    uuid1: \(String(data: uuid1.data, encoding: .utf8)!)
+    uuid2: \(String(data: uuid2.data, encoding: .utf8)!)
     """
 }
 

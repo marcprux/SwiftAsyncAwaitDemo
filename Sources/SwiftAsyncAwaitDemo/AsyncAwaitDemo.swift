@@ -58,7 +58,7 @@ public extension URLSession {
 
     /// Fetch the data at the given URL and return it as an array of JSON Dictionaries
     func json(url: String) async throws -> [NSDictionary] {
-        let response = try await fetch(url: url)
+        let response = try await fetch(url)
         let ob = try JSONSerialization.jsonObject(with: response.data, options: [])
         if let dict = ob as? NSDictionary {
             return [dict]
@@ -90,7 +90,7 @@ func downloadFlag(for language: String) async throws -> (info: NSDictionary, ima
         throw WebServiceErrors.noFlag
     }
 
-    let flagResponse = try await URLSession.shared.fetch(url: flagURL)
+    let flagResponse = try await URLSession.shared.fetch(flagURL)
     let flagData = flagResponse.data
     // let flagXML = try XMLDocument(data: flagData, options: [.nodeLoadExternalEntitiesNever])
 
