@@ -39,7 +39,7 @@ public extension DispatchQueue {
 public extension URLSession {
 
     /// Fetches the contents of the given URL
-    func fetch(url: String) async throws -> (response: HTTPURLResponse, data: Data) {
+    func fetch(_ url: String) async throws -> (response: HTTPURLResponse, data: Data) {
         // withUnsafeThrowingContinuation()
         // withCheckedThrowingContinuation()
         return try await withUnsafeThrowingContinuation { continuation in

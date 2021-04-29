@@ -1,5 +1,8 @@
 import XCTest
 @testable import SwiftAsyncAwaitDemo
+#if canImport(FoundationNetworking)
+import FoundationNetworking
+#endif
 
 #if swift(>=5.5)
 
@@ -71,6 +74,26 @@ final class AsyncAwaitDemoTests: XCTestCase {
             XCTAssertEqual("Māori", (mi.info["languages"] as? [NSDictionary])?.last?["name"] as? String)
         }
     }
+
+    func testConcurrency() throws {
+        try waitForAsyncThrowing {
+            try await downloadTasks()
+        }
+    }
+}
+
+
+func downloadTasks() async throws -> String {
+    print("\(#function) started")
+
+    async let uuid1 = URLSession.shared.fetch("https://httpbin.org/uuid")
+    async let uuid2 = URLSession.shared.fetch("https://httpbin.org/uuid")
+
+    return """
+    ids fetched concurrently:
+    uuid1: \(String(data: uuid1, encoding: .utf8)!)
+    uuid2: \(String(data: uuid2, encoding: .utf8)!)
+    """
 }
 
 
