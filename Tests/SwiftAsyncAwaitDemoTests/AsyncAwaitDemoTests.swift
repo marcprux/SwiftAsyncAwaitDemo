@@ -3,9 +3,6 @@ import XCTest
 
 #if swift(>=5.5)
 
-
-
-
 func foo() async -> String {
     return "FOO"
 }
@@ -16,6 +13,22 @@ func bar() async throws -> String {
 }
 
 
+
+
+
+
+
+
+
+
+
+@available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
+func foo2() async -> String {
+    return await DispatchQueue.global().asyncOperation(in: .now() + .seconds(3)) {
+        "FOOX"
+    }
+    // return "FOO"
+}
 
 
 

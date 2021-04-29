@@ -4,6 +4,37 @@ import FoundationNetworking
 #endif
 
 #if swift(>=5.5)
+
+@available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
+public extension DispatchQueue {
+    /// Performs the given operation as an async block
+    func asyncOperation<T>(in deadline: DispatchTime = .now(), block: @escaping () -> T) async -> T {
+        return await withUnsafeContinuation { continuation in
+            asyncAfter(deadline: deadline) {
+                continuation.resume(returning: block())
+            }
+        }
+    }
+
+
+    /// Performs the given operation as an async block, handling any errors that might be thrown
+    func asyncThrowingOperation<T>(in deadline: DispatchTime = .now(), block: @escaping () throws -> T) async throws -> T {
+
+        return try await withUnsafeThrowingContinuation { continuation in
+            asyncAfter(deadline: deadline) {
+                do {
+                    let value = try block()
+                    continuation.resume(returning: value)
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+}
+
+
 @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
 public extension URLSession {
 
