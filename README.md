@@ -1,8 +1,21 @@
+footer: async/await demo: https://github.com/marcprux/SwiftAsyncAwaitDemo
+autoscale: true
 
-Async/Await
+# Async/Await
 
-Marc Prud'hommeaux
-Rocket Insights, April 2021
+## Marc Prud'hommeaux
+### Rocket Insights, April 2021
+
+
+---
+
+
+# The World of Swift Concurrency [^1]
+
+![inline](https://desiatov.com/static/SwiftConcurrencyDependencies-dd58811a6b3b7d7f21b03f64b5dea026-a2a6f.png)
+
+[^1]: Image: https://desiatov.com/swift-structured-concurrency-introduction/
+
 
 ---
 
@@ -23,17 +36,16 @@ https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-val
 Status: Active Review
 https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-concurrency.md
 
-
 ---
 
 
-## Concurrent w/ Swift [^1]
-![inline](https://desiatov.com/static/SwiftConcurrencyDependencies-dd58811a6b3b7d7f21b03f64b5dea026-a2a6f.png)
-
-[^1]: Image: https://desiatov.com/swift-structured-concurrency-introduction/
-
+| Header 1 | Header 2 | Header 3 |
+| --- | --- | --- |
+| Cell 1 | Cell 2 | Cell 3 |
+| Cell 4 | Cell 5 | Cell 6 |
 
 ---
+
 
 # Async/await
 
