@@ -10,9 +10,12 @@ func foo() async -> String {
     return "FOO"
 }
 
+
 func bar() async throws -> String {
     return "BAR"
 }
+
+
 
 
 
@@ -36,15 +39,15 @@ final class AsyncAwaitDemoTests: XCTestCase {
 
     func testFetcher() throws {
         XCTAssertEqual(200, try waitForAsyncThrowing {
-            try await AsyncAwaitFetcher.fetch(url: "http://www.example.org").response.statusCode
+            try await URLSession.shared.fetch(url: "http://www.example.com").response.statusCode
         })
 
         XCTAssertEqual(404, try waitForAsyncThrowing {
-            try await AsyncAwaitFetcher.fetch(url: "http://www.example.org/MISSING").response.statusCode
+            try await URLSession.shared.fetch(url: "http://www.example.net/MISSING").response.statusCode
         })
 
         XCTAssertEqual(1256, try waitForAsyncThrowing {
-            try await AsyncAwaitFetcher.fetch(url: "http://www.example.org").data.count
+            try await URLSession.shared.fetch(url: "http://www.example.org").data.count
         })
     }
 

@@ -1,4 +1,4 @@
-footer: async/await demo: https://github.com/marcprux/SwiftAsyncAwaitDemo
+footer: async/await demo: [https://github.com/marcprux/SwiftAsyncAwaitDemo](https://github.com/marcprux/SwiftAsyncAwaitDemo)
 autoscale: true
 
 # Async/Await
@@ -9,12 +9,25 @@ autoscale: true
 
 ---
 
+# Running the Sample Project
 
-# The World of Swift Concurrency [^1]
+• Environment: macOS 11.3 & Xcode 12.5
+
+• Install and activate [Swift 5.5 Development](https://swift.org/builds/swift-5.5-branch/xcode/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a-osx.pkg) toolchain from [https://swift.org/download](https://swift.org/download)
+
+• [https://github.com/marcprux/SwiftAsyncAwaitDemo](https://github.com/marcprux/SwiftAsyncAwaitDemo)
+
+• Open Package.swift in Xcode[^1] and run tests
+
+[^1]: note Package.swift build flag: `-Xfrontend -enable-experimental-concurrency`
+
+---
+
+# The World of Swift Concurrency [^2]
 
 ![inline](https://desiatov.com/static/SwiftConcurrencyDependencies-dd58811a6b3b7d7f21b03f64b5dea026-a2a6f.png)
 
-[^1]: Image: https://desiatov.com/swift-structured-concurrency-introduction/
+[^2]: Image: [https://desiatov.com/swift-structured-concurrency-introduction/](https://desiatov.com/swift-structured-concurrency-introduction/)
 
 
 ---
@@ -28,26 +41,24 @@ autoscale: true
 *Status: Implemented (Swift 5.5)*
 [https://github.com/apple/swift-evolution/blob/main/proposals/0297-concurrency-objc.md#introduction](https://github.com/apple/swift-evolution/blob/main/proposals/0297-concurrency-objc.md#introduction)
 
-**SE-0302: Sendable and @Sendable closures**
-Status: Accepted
-https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md
+---
 
-**SE-0304: Structured concurrency**
-Status: Active Review
-https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-concurrency.md
+# Swift 5.5
+
+• Swift 5.4 was released on April 26[^3] 
+
+• Next minor version typically in Fall (iOS 15?)
+
+• __*Appears*__ to be backwards-compatible
+
+
+
+[^3]: [https://swift.org/blog/swift-5-4-released/](https://swift.org/blog/swift-5-4-released/)
 
 ---
 
 
-| Header 1 | Header 2 | Header 3 |
-| --- | --- | --- |
-| Cell 1 | Cell 2 | Cell 3 |
-| Cell 4 | Cell 5 | Cell 6 |
-
----
-
-
-# Async/await
+# Part 1: Async/await
 
 * Proposal: [SE-0296](0296-async-await.md)
 * Authors: [John McCall](https://github.com/rjmccall), [Doug Gregor](https://github.com/DougGregor)

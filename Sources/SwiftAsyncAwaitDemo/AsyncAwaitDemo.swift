@@ -5,15 +5,15 @@ import FoundationNetworking
 
 #if swift(>=5.5)
 @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
-public struct AsyncAwaitFetcher {
+public extension URLSession {
 
     /// Fetches the contents of the given URL
-    public static func fetch(url: String) async throws -> (response: HTTPURLResponse, data: Data) {
+    func fetch(url: String) async throws -> (response: HTTPURLResponse, data: Data) {
         // withUnsafeThrowingContinuation()
         // withCheckedThrowingContinuation()
         return try await withUnsafeThrowingContinuation { continuation in
             guard let url = URL(string: url) else { return }
-            let task = URLSession.shared.dataTask(with: url) { data, response, error in
+            let task = self.dataTask(with: url) { data, response, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 } else if let data = data, let response = response as? HTTPURLResponse {
@@ -22,12 +22,11 @@ public struct AsyncAwaitFetcher {
             }
             task.resume()
         }
-
     }
 
 
     /// Fetch the data at the given URL and return it as an array of JSON Dictionaries
-    public static func json(url: String) async throws -> [NSDictionary] {
+    func json(url: String) async throws -> [NSDictionary] {
         let response = try await fetch(url: url)
         let ob = try JSONSerialization.jsonObject(with: response.data, options: [])
         if let dict = ob as? NSDictionary {
@@ -50,7 +49,7 @@ public enum FetchError {
 
 @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
 func downloadFlag(for language: String) async throws -> (info: NSDictionary, image: Data) {
-    let results = try await AsyncAwaitFetcher.json(url: "https://restcountries.eu/rest/v2/lang/" + language)
+    let results = try await URLSession.shared.json(url: "https://restcountries.eu/rest/v2/lang/" + language)
 
     guard let infoDict = results.first else {
         throw WebServiceErrors.noValidResponse
@@ -60,7 +59,7 @@ func downloadFlag(for language: String) async throws -> (info: NSDictionary, ima
         throw WebServiceErrors.noFlag
     }
 
-    let flagResponse = try await AsyncAwaitFetcher.fetch(url: flagURL)
+    let flagResponse = try await URLSession.shared.fetch(url: flagURL)
     let flagData = flagResponse.data
     // let flagXML = try XMLDocument(data: flagData, options: [.nodeLoadExternalEntitiesNever])
 
