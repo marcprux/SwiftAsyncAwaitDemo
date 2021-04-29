@@ -79,7 +79,7 @@ jobs:
       - name: Install Swift 5.5 Toolchain
         run: sudo installer -pkg swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a-osx.pkg -target /
       - name: Run tests
-        run: swift test
+        run: /Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a.xctoolchain/usr/bin/swift-test
 
   macOS11:
     if: false # macos-11.0 not yet public
@@ -91,7 +91,7 @@ jobs:
         run: swift test
 
   Windows10:
-    if: false # compiles but crashes on test
+    #if: false # compiles but crashes on test
     runs-on: windows-latest
     needs: [Linux] # Linux must pass first
     steps:
@@ -100,13 +100,12 @@ jobs:
 
       - name: Set Environment Variables
         run: |
-          echo "SWIFT_WINSNAP=swift-DEVELOPMENT-SNAPSHOT-03-21-a" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           echo "SDKROOT=C:\Library\Developer\Platforms\Windows.platform\Developer\SDKs\Windows.sdk" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
           echo "DEVELOPER_DIR=C:\Library\Developer" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Install swift-DEVELOPMENT-SNAPSHOT
         run: |
-          Install-Binary -Url "https://swift.org/builds/development/windows10/${env:SWIFT_WINSNAP}/${env:SWIFT_WINSNAP}-windows10.exe" -Name "installer.exe" -ArgumentList ("-q")
+          Install-Binary -Url "https://swift.org/builds/swift-5.5-branch/windows10/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a-windows10.exe" -Name "installer.exe" -ArgumentList ("-q")
 
 
       - name: Adjust Paths
