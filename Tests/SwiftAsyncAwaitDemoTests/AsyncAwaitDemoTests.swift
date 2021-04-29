@@ -1,6 +1,7 @@
 import XCTest
 @testable import SwiftAsyncAwaitDemo
 
+#if swift(>=5.5)
 
 
 
@@ -96,3 +97,5 @@ private final class ReferenceWrapper<T> {
     fileprivate var value: T
     fileprivate init(_ value: T) { self.value = value }
 }
+
+#endif

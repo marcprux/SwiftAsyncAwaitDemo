@@ -3,6 +3,7 @@ import Foundation
 import FoundationNetworking
 #endif
 
+#if swift(>=5.5)
 @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
 public struct AsyncAwaitFetcher {
 
@@ -72,6 +73,4 @@ enum WebServiceErrors : Error {
     case noValidResponse
     case noFlag
 }
-
-
-
+#endif

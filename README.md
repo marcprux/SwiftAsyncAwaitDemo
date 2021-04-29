@@ -22,13 +22,20 @@ runAsyncAndBlock
 [https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md](https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md)
 
 
-### SE-0302: Sendable and @Sendable closures
+**SE-0297: Concurrency Interoperability with Objective-C**
+*Status: Implemented (Swift 5.5)*
+[https://github.com/apple/swift-evolution/blob/main/proposals/0297-concurrency-objc.md#introduction](https://github.com/apple/swift-evolution/blob/main/proposals/0297-concurrency-objc.md#introduction)
+
+**SE-0302: Sendable and @Sendable closures**
 Status: Accepted
 https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-value-and-concurrent-closures.md
 
-### SE-0304: Structured concurrency
+**SE-0304: Structured concurrency**
 Status: Active Review
 https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-concurrency.md
+
+
+
 
 ---
 
