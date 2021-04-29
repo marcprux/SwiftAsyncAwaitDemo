@@ -6,10 +6,8 @@ Rocket Insights, April 2021
 
 ---
 
+xcrun /Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a.xctoolchain/usr/bin/swift -Xfrontend -enable-experimental-concurrency test
 
-```
-runAsyncAndBlock
-```
 
 ```
 -Xfrontend -enable-experimental-concurrency
@@ -34,6 +32,12 @@ https://github.com/apple/swift-evolution/blob/main/proposals/0302-concurrent-val
 Status: Active Review
 https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-concurrency.md
 
+
+---
+
+
+Credits: https://desiatov.com/swift-structured-concurrency-introduction/
+Also: https://github.com/MaxDesiatov/SwiftConcurrencyExample
 
 
 

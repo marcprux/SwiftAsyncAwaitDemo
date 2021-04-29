@@ -69,7 +69,6 @@ jobs:
               ONLY_ACTIVE_ARCH=YES CODE_SIGNING_REQUIRED=NO
 
   macOS10:
-    if: false # macos-11.0 not yet public; not working on 10.15
     runs-on: macos-10.15
     needs: [Linux] # Linux must pass first
     steps:
@@ -78,8 +77,10 @@ jobs:
         run: curl -O https://swift.org/builds/swift-5.5-branch/xcode/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a-osx.pkg
       - name: Install Swift 5.5 Toolchain
         run: sudo installer -pkg swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a-osx.pkg -target /
-      - name: Run tests
-        run: /Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a.xctoolchain/usr/bin/swift-test
+      - name: Build
+        run: /Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a.xctoolchain/usr/bin/swift build
+      - name: Test
+        run: DYLD_LIBRARY_PATH=/Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a.xctoolchain/usr/lib/swift/macosx/ /Applications/Xcode.app/Contents/Developer/usr/bin/xctest /opt/src/github/marcprux/SwiftAsyncAwaitDemo/.build/x86_64-apple-macosx/debug/SwiftAsyncAwaitDemoPackageTests.xctest
 
   macOS11:
     if: false # macos-11.0 not yet public
