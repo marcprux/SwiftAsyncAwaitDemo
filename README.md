@@ -6,15 +6,6 @@ Rocket Insights, April 2021
 
 ---
 
-xcrun /Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a.xctoolchain/usr/bin/swift -Xfrontend -enable-experimental-concurrency test
-
-
-```
--Xfrontend -enable-experimental-concurrency
-```
-
----
-
 **SE-0296: Async/await**
 *Status: Implemented (Swift 5.5)*
 [https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md](https://github.com/apple/swift-evolution/blob/main/proposals/0296-async-await.md)
@@ -36,18 +27,11 @@ https://github.com/apple/swift-evolution/blob/main/proposals/0304-structured-con
 ---
 
 
-Credits: https://desiatov.com/swift-structured-concurrency-introduction/
-Also: https://github.com/MaxDesiatov/SwiftConcurrencyExample
+## Concurrent w/ Swift [^1]
+![inline](https://desiatov.com/static/SwiftConcurrencyDependencies-dd58811a6b3b7d7f21b03f64b5dea026-a2a6f.png)
 
+[^1]: Image: https://desiatov.com/swift-structured-concurrency-introduction/
 
-
----
-
-### reasync
-
-What Color is Your Function?
-Bob Nystrom
-https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
 
 ---
 
@@ -540,4 +524,16 @@ func await(_ x: Int, _ y: Int) -> Int { x + y }
 
 let result = await(1, 2)
 ```
+---
 
+
+
+[^2]: Also: https://github.com/MaxDesiatov/SwiftConcurrencyExample
+
+### reasync
+
+What Color is Your Function?
+Bob Nystrom
+https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
+
+---

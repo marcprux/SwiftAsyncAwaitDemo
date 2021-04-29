@@ -81,7 +81,7 @@ jobs:
         # note that we permit test failures because all we are doing is building the .xctest module so we can manually run it with the correct DYLD_LIBRARY_PATH
         run: /Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a.xctoolchain/usr/bin/swift-test || echo "Tolerating test failure"
       - name: Test
-        run: DYLD_LIBRARY_PATH=/Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a.xctoolchain/usr/lib/swift/macosx/ /Applications/Xcode.app/Contents/Developer/usr/bin/xctest /opt/src/github/marcprux/SwiftAsyncAwaitDemo/.build/x86_64-apple-macosx/debug/SwiftAsyncAwaitDemoPackageTests.xctest
+        run: DYLD_LIBRARY_PATH=/Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-04-19-a.xctoolchain/usr/lib/swift/macosx/ /Applications/Xcode.app/Contents/Developer/usr/bin/xctest .build/x86_64-apple-macosx/debug/SwiftAsyncAwaitDemoPackageTests.xctest
 
   macOS11:
     if: false # macos-11.0 not yet public
