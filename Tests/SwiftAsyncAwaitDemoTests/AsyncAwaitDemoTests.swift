@@ -75,11 +75,32 @@ final class AsyncAwaitDemoTests: XCTestCase {
         }
     }
 
+    func testNoStructuredConcurrency() throws {
+        try waitForAsyncThrowing {
+            try await downloadTasksWithoutStructuredConcurrency()
+        }
+    }
+
     func testStructuredConcurrency() throws {
         try waitForAsyncThrowing {
             try await downloadTasksWithStructuredConcurrency()
         }
     }
+}
+
+
+@available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
+func downloadTasksWithoutStructuredConcurrency() async throws -> String {
+    print("\(#function) started")
+
+    let uuid1 = try await URLSession.shared.fetch("https://httpbin.org/uuid")
+    let uuid2 = try await URLSession.shared.fetch("https://httpbin.org/uuid")
+
+    return """
+    ids fetched concurrently:
+    uuid1: \(String(data: uuid1.data, encoding: .utf8)!)
+    uuid2: \(String(data: uuid2.data, encoding: .utf8)!)
+    """
 }
 
 
