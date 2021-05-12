@@ -43,7 +43,12 @@ public extension URLSession {
         // withUnsafeThrowingContinuation()
         // withCheckedThrowingContinuation()
         return try await withUnsafeThrowingContinuation { continuation in
-            guard let url = URL(string: url) else { return }
+            let x = url
+            guard let url = URL(string: url) else {
+                continuation.resume(throwing: FetchError.URLInvalid(x))
+                return
+
+            }
             let task = self.dataTask(with: url) { data, response, error in
                 if let error = error {
                     continuation.resume(throwing: error)
@@ -71,7 +76,7 @@ public extension URLSession {
 }
 
 /// Errors from `AsyncAwaitFetcher.fetch`
-public enum FetchError {
+public enum FetchError : Error {
     case URLInvalid(String)
     case noResponseOrError
     case bothResponseAndError

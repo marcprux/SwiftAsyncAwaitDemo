@@ -7,6 +7,7 @@ import FoundationNetworking
 #if swift(>=5.5)
 
 func foo() async -> String {
+    print(Thread.current)
     return "FOO"
 }
 
@@ -26,7 +27,7 @@ func bar() async throws -> String {
 
 
 @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
-func foo2() async -> String {
+func fooX() async -> String {
     return await DispatchQueue.global().asyncOperation(in: .now() + .seconds(3)) {
         "FOOX"
     }
@@ -40,11 +41,21 @@ func foo2() async -> String {
 @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
 final class AsyncAwaitDemoTests: XCTestCase {
 
+    func testSyncDOWNLOAD() throws {
+        let contents = try Data(contentsOf: URL(string: "https://www.example.org")!)
+    }
+
     // @asyncHandler // “'@asyncHandler' has been removed from the language” (20-04-2021)
     func testAsyncAwait() throws {
-        waitForAsync {
+        try waitForAsyncThrowing {
+            print(Thread.current)
             let x = await foo()
+            print(Thread.current)
+            let y = await foo()
+            print(Thread.current)
+
             XCTAssertEqual("FOO", x)
+            XCTAssertEqual("FOO", y)
         }
 
         try waitForAsyncThrowing {
@@ -52,6 +63,9 @@ final class AsyncAwaitDemoTests: XCTestCase {
             XCTAssertEqual("BAR", x)
         }
     }
+
+
+
 
     func testFetcher() throws {
         XCTAssertEqual(200, try waitForAsyncThrowing {
@@ -75,18 +89,33 @@ final class AsyncAwaitDemoTests: XCTestCase {
         }
     }
 
+
+
+
     func testNoStructuredConcurrency() throws {
         try waitForAsyncThrowing {
-            try await downloadTasksWithoutStructuredConcurrency()
+            print(try await downloadTasksWithoutStructuredConcurrency())
         }
     }
 
+
+
+
+
     func testStructuredConcurrency() throws {
         try waitForAsyncThrowing {
-            try await downloadTasksWithStructuredConcurrency()
+            print(try await downloadTasksWithStructuredConcurrency())
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
@@ -97,7 +126,7 @@ func downloadTasksWithoutStructuredConcurrency() async throws -> String {
     let uuid2 = try await URLSession.shared.fetch("https://httpbin.org/uuid")
 
     return """
-    ids fetched concurrently:
+    ids fetched non-concurrently:
     uuid1: \(String(data: uuid1.data, encoding: .utf8)!)
     uuid2: \(String(data: uuid2.data, encoding: .utf8)!)
     """
@@ -119,11 +148,17 @@ func downloadTasksWithStructuredConcurrency() async throws -> String {
 }
 
 
+
+
+
+
+
+
  // “'runDetached(priority:operation:)' is only available in macOS 9999 or newer”
 public extension XCTestCase {
     /// Performs the given `async` closure and wait for completion using an `XCTestExpectation`, then returns the result or re-throws the error
     @available(macOS 9999, iOS 9999, watchOS 9999, tvOS 9999, *)
-    @discardableResult func waitForAsyncThrowing<T>(expectationDescription: String? = nil, timeout: TimeInterval = 5.0, closure: @escaping () async throws -> T) throws -> T {
+    @discardableResult func waitForAsyncThrowing<T>(expectationDescription: String? = nil, timeout: TimeInterval = 10.0, closure: @escaping () async throws -> T) throws -> T {
         let expectation = self.expectation(description: expectationDescription ?? "Async operation")
 
         let result: ReferenceWrapper<Result<T, Error>?> = .init(nil)
