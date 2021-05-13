@@ -556,8 +556,7 @@ let result = await(1, 2)
 
 ### reasync
 
-What Color is Your Function?
-Bob Nystrom
-https://journal.stuffwithstuff.com/2015/02/01/what-color-is-your-function/
+Note: 
 
+Builds against the swift-DEVELOPMENT-SNAPSHOT-2021-05-12-a-osx.pkg at https://swift.org/builds/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2021-05-12-a/swift-DEVELOPMENT-SNAPSHOT-2021-05-12-a-osx.pkg
 ---
