@@ -4,7 +4,8 @@ autoscale: true
 # Async/Await
 
 ## Marc Prud'hommeaux
-### Rocket Insights, April 2021
+## marc@glimpse.io
+### CocoaHeads Boston, May 2021
 
 
 ---
