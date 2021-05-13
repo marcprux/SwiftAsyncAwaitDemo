@@ -20,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: mkdir swift
-      - run: curl https://swift.org/builds/swift-5.5-branch/ubuntu2004/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a-ubuntu20.04.tar.gz -s | tar -xz
+      - run: curl https://swift.org/builds/swift-5.5-branch/ubuntu2004/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-11-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-11-a-ubuntu20.04.tar.gz -s | tar -xz
       - run: 'mv swift-5.5-DEVELOPMENT-SNAPSHOT* swift-5.5-DEVELOPMENT-SNAPSHOT'
       - run: ./swift-5.5-DEVELOPMENT-SNAPSHOT/usr/bin/swift test --enable-test-discovery
 
@@ -74,14 +74,14 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Download Swift 5.5 Toolchain
-        run: curl -O https://swift.org/builds/swift-5.5-branch/xcode/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a-osx.pkg
+        run: curl -O https://swift.org/builds/swift-5.5-branch/xcode/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-11-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-11-a-osx.pkg
       - name: Install Swift 5.5 Toolchain
-        run: sudo installer -pkg swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a-osx.pkg -target /
+        run: sudo installer -pkg swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-11-a-osx.pkg -target /
       - name: Build Tests
         # note that we permit test failures because all we are doing is building the .xctest module so we can manually run it with the correct DYLD_LIBRARY_PATH
-        run: /Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a.xctoolchain/usr/bin/swift-test || echo "Tolerating test failure"
+        run: /Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-11-a.xctoolchain/usr/bin/swift-test || echo "Tolerating test failure"
       - name: Test
-        run: DYLD_LIBRARY_PATH=/Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a.xctoolchain/usr/lib/swift/macosx/ /Applications/Xcode.app/Contents/Developer/usr/bin/xctest .build/x86_64-apple-macosx/debug/SwiftAsyncAwaitDemoPackageTests.xctest
+        run: DYLD_LIBRARY_PATH=/Library/Developer/Toolchains/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-11-a.xctoolchain/usr/lib/swift/macosx/ /Applications/Xcode.app/Contents/Developer/usr/bin/xctest .build/x86_64-apple-macosx/debug/SwiftAsyncAwaitDemoPackageTests.xctest
 
   macOS11:
     if: false # macos-11.0 not yet public
@@ -93,7 +93,7 @@ jobs:
         run: swift test
 
   Windows10:
-    if: false # missing withUnsafeThrowingContinuation 
+    #if: false # missing withUnsafeThrowingContinuation 
     runs-on: windows-latest
     needs: [Linux] # Linux must pass first
     steps:
@@ -107,7 +107,7 @@ jobs:
 
       - name: Install swift-DEVELOPMENT-SNAPSHOT
         run: |
-          Install-Binary -Url "https://swift.org/builds/swift-5.5-branch/windows10/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-02-a-windows10.exe" -Name "installer.exe" -ArgumentList ("-q")
+          Install-Binary -Url "https://swift.org/builds/swift-5.5-branch/windows10/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-09-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-09-a-windows10.exe" -Name "installer.exe" -ArgumentList ("-q")
 
 
       - name: Adjust Paths
