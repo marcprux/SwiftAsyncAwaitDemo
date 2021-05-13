@@ -558,5 +558,6 @@ let result = await(1, 2)
 
 Note: 
 
-Builds against the swift-DEVELOPMENT-SNAPSHOT-2021-05-12-a-osx.pkg at https://swift.org/builds/development/xcode/swift-DEVELOPMENT-SNAPSHOT-2021-05-12-a/swift-DEVELOPMENT-SNAPSHOT-2021-05-12-a-osx.pkg
+https://swift.org/builds/swift-5.5-branch/xcode/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-11-a/swift-5.5-DEVELOPMENT-SNAPSHOT-2021-05-11-a-osx.pkg
+
 ---
